@@ -1,0 +1,3 @@
+Date: 1499427615979, event: change, file: file-2 
+Date: 1499427637495, event: change, file: file-3 
+Date: 1499427646774, event: rename, file: file-2 
