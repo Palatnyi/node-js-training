@@ -2,17 +2,17 @@ const fs = require("fs");
 const path = require("path");
 
 function isDirSync(file) {
-    return fs.statSync(file).isDirectory();;
+    return fs.statSync(file).isDirectory();
 }
 
 function isFileSync(file) {
     return fs.statSync(file).isFile();
 }
 
-module.exports = function deleteRecursively(filePath) {
+function deleteFolderSync(filePath) {
 
     if(!fs.existsSync(filePath)) {
-        return;
+        throw new Error("File doesn't exists");
     }
 
     if (!isDirSync(filePath)) {
@@ -20,16 +20,19 @@ module.exports = function deleteRecursively(filePath) {
     }
 
     const files = fs.readdirSync(filePath);
+    
     files.forEach((file) => {
         const innerPath = path.join(filePath, file);
         if (isFileSync(innerPath)) {
             fs.unlinkSync(innerPath);
             return;
         }
-        deleteRecursively(innerPath);
+        deleteFolderSync(innerPath);
     });
 
     if (!fs.readdirSync(filePath).length) {
         fs.rmdirSync(filePath);
     }
 };
+
+module.exports = deleteFolderSync;
